@@ -1,0 +1,21 @@
+class Product{
+    constructor(name, price){
+        this.name = name;
+        this.price = price;
+        this.weight = 100;
+    }
+
+    calculate = function(get_weight) {
+        console.log(`${product.name} ${get_weight}g 의 가격은 ${product.price * (get_weight/product.weight)}원 입니다.`);
+    }
+
+}
+
+let product = new Product("돼지 삼겹살",1690);
+
+
+product.calculate(200);
+
+/*Product.prototype.calculate = function(get_weight) {
+    console.log(`${product.name} ${get_weight}g 의 가격은 ${product.price * (get_weight/product.weight)}원 입니다.`);
+}*/
