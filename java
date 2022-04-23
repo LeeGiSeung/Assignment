@@ -50,18 +50,24 @@ public class midterm1 {
 			}
 			
 			else if(choice == 4) {
-				for(int i = 0; i<array.length; i++) {
-					if(array[i+1]==array.length)
+				for(int i = 0; i<array.length-1; i++) {
+					
+					if(array[i]==array.length)
 						break;
-					else if(array[i]<array[i+1]) {
+					
+					else if(array[i]<array[i+1]) { 
 						min = array[i];
 						max = array[i+1];
 					}
+					
 					else if(array[i]>array[i+1]) {
 						min = array[i+1];
 						max = array[i];
 					}
-				}
+
+					
+					}
+				System.out.printf("최소 값 : %d\n최대 값 : %d\n",min,max);
 			}
 			
 			else if(choice == 5) {
@@ -71,15 +77,11 @@ public class midterm1 {
 			
 			
 			
-			
+			}
+		
+		
 		}
-		
-		
-
-
-	}
 	
 	
-	
-
 }
+//자바 연습문제 6
