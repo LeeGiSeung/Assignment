@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+ul{
+    list-style:  none;
+}
+
+body {
+    height: 100%;
+    overflow: hidden; /*넘치는 부분 숨긴다.*/
+}
+
+.score {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 2rem;
+}
+
+.playground {
+    border: 1px solid #333;
+}
