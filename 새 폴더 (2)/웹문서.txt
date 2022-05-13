@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>location객체로 사이트 이동하기</title>
+
+
+    <!--코딩1-->
+</head>
+
+<script>
+    function Go(listBox){
+        if(listBox.selectedIndex !=0)
+            console.log(listBox.selectedIndex);
+        location=listBox.options[listBox.selectedIndex].value;
+    }
+</script>
+<body>
+
+    <form name=frm>
+        <table align=center width="500" border="2" cellspacing="2" cellpadding="15" bordercolor="#eeeeee" bgcolor=#ffffff>
+            <tr>
+                <td align=center bgcolor="#79DEFF">
+                    <font color="#FFFFFF">*</font>
+                    목록상자를 선택하거나 주소입력상자에 <br>
+                    주소를 입력하고 이동버튼을 클릭하세요
+                    <font color+'#FFFFFF'>*</font>
+                    <br><br>
+
+                    <!--코딩2-->
+                    <select name="url"onChange="Go(this)">
+                        <option selected>쿨사이트</option>
+                        <option value="=http://www.hanbitbook.co.kr">한빛미디어</option>
+                        <option value="=http://www.naver.com">네이버</option>
+                        <option value="=http://www.daum.net">다음넷</option>
+                        <option value="=http://www.nate.com">네이트</option>
+                    </select>
+
+                    <!--코딩3-->
+                    <input type="text" name="site" size="30" value="http://www.">
+
+                    <!--코딩4-->
+                    <img src="bt_move.gif" align=absmiddleonclick="location.href=document.froms[0].site.value"style="cursor:hand">
+                    
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>
