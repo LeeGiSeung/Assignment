@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>웹 페이지</title>
+    <script>
+
+            function copy(){
+                var getint = document.getElementById('int');
+                var hello = document.getElementById('result');
+                hello.innerHTML = getint.value;
+            }
+
+        window.onload = function() {
+
+            /*document.body.setAttribute('data-custom', 'value');
+
+            const dataCustom = document.body.getAttribute('data-custom');
+            alert(dataCustom);*/
+        }
+    </script>
+
+</head>
+<body>  
+        <input id="int" type="text" value=""/>
+        <button onclick="copy()">복사</button>
+        <br/>
+
+    <div id="result">
+      
+    </div>
+</body>
+</html>
