@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InSSang</title>
+</head>
+<body>
+    <div style="margin-left: 600px;margin-top: 200px;">
+
+        <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwlexdL5n_DFrz7hcdFENNEbVT6mGW79skjw&usqp=CAU">
+        </div>
+        
+        <div>
+           <a href="https://www.naver.com/"><img src="https://t1.daumcdn.net/cfile/tistory/99580C465C3D7D130C" style="height: 60px;width:auto" class="Naverimg"></a>
+        </div>
+       
+        <div>
+          <a href="https://www.facebook.com/"><img src="https://t1.daumcdn.net/cfile/tistory/991159465C3D7D110F" style="height: 60px;width:auto" class="Facebookimg"></a>
+        </div>
+        
+        <div>
+            <a href="javascript:kakaoLogin();"><img src="https://www.gb.go.kr/Main/Images/ko/member/certi_kakao_login.png" style="height: 60px;width: auto;" class="Kakaoimg"></a>
+        </div>
+
+        <div>
+            <button class="api-btn" onclick="kakaoLogout()" style="margin-left:100px;">로그아웃</button>
+    
+             <script type="text/javascript">
+                function kakaoLogout() {
+                if (!Kakao.Auth.getAccessToken()) {
+                 alert('Not logged in.')
+                 return
+             }
+                Kakao.Auth.logout(function() {
+                alert('logout ok\naccess token -> ' + Kakao.Auth.getAccessToken())
+             })
+              var getResultDiv = document.getElementById('result');
+             getResultDiv.innerHTML ='로그아웃 되었습니다.';
+              }
+             </script>
+             </div>
+    
+         </div>
+
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        window.Kakao.init("f2f4ca84e67f585b994c3dec20afc648")
+
+        function kakaoLogin() {
+            window.Kakao.Auth.login({
+                scope:'profile_nickname, gender',
+                success: function (authObj) {
+                console.log(authObj);
+                window.Kakao.API.request({
+                    url:'/v2/user/me',
+                    success: res => {
+                        const kakao_account = res.kakao_account;
+                        console.log(kakao_account);
+                        var getResultDiv = document.getElementById('result');
+                        if(kakao_account.gender=='male'){
+                            getResultDiv.innerHTML = '성별 : 남성         이름 : '+ Object.values(kakao_account.profile);
+                        }
+                        else
+                            getResultDiv.innerHTML = '성별 : 여성         이름 : '+ Object.valuse(kakao_account.profile);
+                        
+                    }
+                })
+                }
+            });
+            
+        }
+     </script>
+<div>
+    <a href="index.html">인덱스이동</a>
+</div>
+</body>
+</html>

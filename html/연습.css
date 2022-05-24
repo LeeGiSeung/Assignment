@@ -1,0 +1,74 @@
+.benu-outer {
+    background-color: white;
+    width: 1920px;
+    height: 100px;
+    text-align: center;
+}
+
+.benu-inner {
+    background-color: white;
+    width: 1280px;
+    height: 100px;
+    display: inline-block;
+}
+
+.benu-picture {
+    width: 160px;
+    height: 80px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.head-outer {
+    background-color: white;
+    width: 1920px;
+    height: 200px;
+    text-align: center;
+}
+
+.head-inner {
+    background-color: black;
+    width: 1280px;
+    height: 200px;
+    display: inline-block;
+}
+
+.head-table {
+    color: white;
+    width: 500px;
+    height: 300px;
+    text-align: center;
+}
+
+.login {
+    width: 200px; 
+    background-color: orange;
+}
+
+.body-outer {
+    background-color: white;
+    width: 1920px;
+    height: 1500px;
+    text-align: center;
+}
+
+.body-inner {
+    background-color: green;
+    width: 1280px;
+    height: 1500px;
+    display: inline-block;
+}
+
+.foot-outer {
+    background-color: white;
+    width: 1920px;
+    height: 200px;
+    text-align: center;
+}
+
+.foot-inner {
+    background-color: blue;
+    width: 1280px;
+    height: 200px;
+    display: inline-block;
+}
