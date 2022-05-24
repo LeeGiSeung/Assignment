@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="javascript:kakaoLogin();"><img src="https://www.gb.go.kr/Main/Images/ko/member/certi_kakao_login.png" style="height: 60px;width: auto;"></a>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        //f2f4ca84e67f585b994c3dec20afc648
+        window.Kakao.init("f2f4ca84e67f585b994c3dec20afc648")
+
+        function kakaoLogin() {
+            window.Kakao.Auth.login({
+                scope:'profile_nickname, gender',
+                success: function (authObj) {
+                console.log(authObj);
+                window.Kakao.API.request({
+                    url:'/v2/user/me',
+                    success: res => {
+                        const kakao_account = res.kakao_account;
+                        console.log(kakao_account);
+                        var getResultDiv = document.getElementById('result');
+                        if(kakao_account.gender=='male'){
+                            getResultDiv.innerHTML = '성별 : 남성         이름 : '+ Object.values(kakao_account.profile);
+                        }
+                        else
+                            getResultDiv.innerHTML = '성별 : 여성         이름 : '+ Object.valuse(kakao_account.profile);
+                        
+                        
+                    }
+                })
+                }
+            });
+
+        }
+
+        
+    </script>
+
+    <div>
+        <button class="api-btn" onclick="kakaoLogout()">로그아웃</button>
+
+<script type="text/javascript">
+  function kakaoLogout() {
+    if (!Kakao.Auth.getAccessToken()) {
+      alert('Not logged in.')
+      return
+    }
+    Kakao.Auth.logout(function() {
+      alert('logout ok\naccess token -> ' + Kakao.Auth.getAccessToken())
+    })
+    var getResultDiv = document.getElementById('result');
+    getResultDiv.innerHTML ='로그아웃 되었습니다.';
+  }
+</script>
+    </div>
+    <div id="result">
+        
+    </div>
+</body>
+</html>
