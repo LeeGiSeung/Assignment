@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <title>InSSangLogin</title>
+</head>
+<body>
+    <div style="margin-left: 600px;margin-top: 200px;">
+
+        <div> <!-- 인쌩로고 -->
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwlexdL5n_DFrz7hcdFENNEbVT6mGW79skjw&usqp=CAU">
+        </div>
+        
+        <div id="naver_id_login">
+           <a href="javascript:naverSignInCallback()"><img src="https://t1.daumcdn.net/cfile/tistory/99580C465C3D7D130C" style="height: 60px;width:auto" class="Naverimg"></a>
+        </div>
+
+        <script type="text/javascript">
+            var naver_id_login = new naver_id_login("DvQ2GFtK1yu_aC1x2S5h", "http://127.0.0.1:5500/Kakao_Login.html");
+            var state = naver_id_login.getUniqState();
+            naver_id_login.setButton("green", 3,60);
+            naver_id_login.setDomain("YOUR_SERVICE_URL");
+            naver_id_login.setState(state);
+            naver_id_login.setPopup(true);
+            naver_id_login.init_naver_id_login();
+        </script>
+
+<script type="text/javascript">
+    var naver_id_login = new naver_id_login("DvQ2GFtK1yu_aC1x2S5h", "http://127.0.0.1:5500/index.html");
+    // 접근 토큰 값 출력
+    alert(naver_id_login.oauthParams.access_token);
+    // 네이버 사용자 프로필 조회
+    naver_id_login.get_naver_userprofile("naverSignInCallback()");
+    // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+    function naverSignInCallback() {
+      alert(naver_id_login.getProfileData('email'));
+      alert(naver_id_login.getProfileData('nickname'));
+      alert(naver_id_login.getProfileData('age'));
+      //getResultDiv.innerHTML = naver_id_login.getProfileData('nickname');
+      console.log("hello");
+    }
+    //네이버 접근 토큰 삭제 https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id={클라이언트 아이디}&client_secret={클라이언트 시크릿}&access_token={접근 토큰}&service_provider=NAVER
+  </script>
+        
+        <div>
+            <a href="javascript:kakaoLogin();"><img src="https://www.gb.go.kr/Main/Images/ko/member/certi_kakao_login.png" style="height: 60px;width: auto;" class="Kakaoimg"></a>
+        </div>
+
+        <div>
+            <button class="api-btn" onclick="kakaoLogout()" style="margin-left:100px;">로그아웃</button>
+    
+             <script type="text/javascript">
+                function kakaoLogout() {
+                if (!Kakao.Auth.getAccessToken()) {
+                 alert('Not logged in.')
+                 return
+             }
+                Kakao.Auth.logout(function() {
+                alert('logout ok\naccess token -> ' + Kakao.Auth.getAccessToken())
+             })
+              var getResultDiv = document.getElementById('result');
+             getResultDiv.innerHTML ='로그아웃 되었습니다.';
+              }
+             </script>
+             </div>
+    
+         </div>
+
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        window.Kakao.init("f2f4ca84e67f585b994c3dec20afc648")
+
+        function kakaoLogin() {
+            window.Kakao.Auth.login({
+                scope:'profile_nickname, gender',
+                success: function (authObj) {
+                console.log(authObj);
+                window.Kakao.API.request({
+                    url:'/v2/user/me',
+                    success: res => {
+                        const kakao_account = res.kakao_account;
+                        console.log(kakao_account);
+                        var getResultDiv = document.getElementById('result');
+                        if(kakao_account.gender=='male'){
+                            getResultDiv.innerHTML = '성별 : 남성         이름 : '+ Object.values(kakao_account.profile);
+                        }
+                        else
+                            getResultDiv.innerHTML = '성별 : 여성         이름 : '+ Object.valuse(kakao_account.profile);
+                        
+                    }
+                })
+                }
+            });
+            
+        }
+     </script>
+<div id="result">
+    <a href="index.html">인덱스이동</a>
+
+</div>
+
+
+</body>
+</html>
