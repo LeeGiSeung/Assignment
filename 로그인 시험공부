@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var userId = "";
+            var userName = "";
+            var userRegion = "";
+            const userArray = [];
+            var userCount = 0;
+            
+            $('#userIdGet').on('click',function(event){
+                //var obj_key = Object.keys(userArray[$('#userId').val()]);
+                //var obj_value = value[obj_key];
+                //$('#getResult').text(userArray[$('#userId').val()]);
+                //$('#getResult').text(obj_key);
+                var obj_value = Object.values(userArray[$('#userId').val()]);
+                $('#getResult').text(obj_value);
+                
+            });
+
+            $('#userIdPost').on('click',function(event){
+                userName = $('#userName').val();
+                userRegion = $('#userRegion').val();
+
+                userArray[userCount] = {
+                    '이름' : userName,
+                    '지역' : userRegion
+                };
+                console.log(userArray[userCount]);
+
+                userCount++;
+
+
+            })
+        });
+    </script>
+</head>
+<body>
+    id:<input type="text" id="userId">
+    <br>
+    <button id="userIdGet">get</button>
+    <br>
+    name:<input type="text" id="userName"> region: <input type="text" id="userRegion">
+    <br>
+    <button id="userIdPost">post</button>
+
+    <div id="getResult"></div>
+</body>
+</html>
