@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <title>Document</title>
+    <script>
+        $(document).ready(function(){
+            $('#gettext').on('click', function(){
+                var uid=$('#uid').val();
+                var urlstr="http://127.0.0.1:52273/user"
+                if(uid!=""){
+                    urlstr+="/"+uid;
+                }
+                console.log(urlstr);
+                $.get("http://127.0.0.1:52273/user", function(rdata,status){
+                    console.log("return: "+rdata);
+                    console.log("status: "+statut);
+                }, 'jason');
+            })
+
+
+            $(".posttest").click(function() {
+                var data={
+                    name:$('#name').val(),
+                    region:$('#region').val()
+                };
+
+                $.ajax({
+                    type:'POST',
+                    url:"http://127.0.0.1:52273/user",
+                    data: data,
+                    success: function(rdata){
+                        console.log(rdata);
+                        $('#content').text("user data is insert...");
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    id:<input type="text" id="uid">
+    <br><button type="button" id="gettext">Get</button>
+    <br>name: <input type="text" id="name"> region : <input type="text" id="region">
+    <br><button type="text" class="posttest">POST</button>
+    <br>
+    <div id="content"></div>
+</body>
+</html>
