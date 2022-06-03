@@ -1,0 +1,342 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>insseng</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<link href="yong.css" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
+		<script>
+			window.onload = function() {
+				var name = Object.values(kakao_account.profile);
+				var gender = Object.values(kakao_account.gender);
+
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+// 지도에 클릭 이벤트를 등록합니다
+// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+    
+    // 클릭한 위도, 경도 정보를 가져옵니다 
+    var latlng = mouseEvent.latLng;
+
+   getWeather(latlng.getLat(), latlng.getLng());
+    var resultDiv = document.getElementById('result'); 
+    resultDiv.innerHTML = message;
+    
+});
+								const API_KEY = "ce496c0285a5f06e943642c525beb374"; //add your API KEY 
+								const COORDS = 'coords'; //좌표를 받을 변수 
+						
+								//DOM객체들 
+								const weatherInfo = document.querySelector('.weatherInfo');
+								const weatherIconImg = document.querySelector('.weatherIcon');
+						
+								//초기화 
+								function init() {
+									askForCoords();
+								}
+						
+								//좌표를 물어보는 함수 
+								function askForCoords() {
+									navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
+								}
+						
+								//좌표를 얻는데 성공했을 때 쓰이는 함수 
+								function handleSuccess(position) {
+									const latitude = position.coords.latitude;
+									const longitude = position.coords.longitude;
+						
+									getWeather(latitude, longitude); //얻은 좌표값을 바탕으로 날씨정보를 불러온다.
+								}
+								//좌표를 얻는데 실패했을 때 쓰이는 함수 
+								function handleError() {
+									console.log("can't not access to location");
+								}
+						
+								//날씨 api를 통해 날씨에 관련된 정보들을 받아온다. 
+								function getWeather(latitude, longitude) {
+									fetch('https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=ce496c0285a5f06e943642c525beb374&units=metric&lang=kr').then(function (response) {
+										return response.json();
+									})
+										.then(function (json) {
+											//온도, 위치, 날씨묘사, 날씨아이콘을 받는다. 
+											const temperature = json.main.feels_like;
+											const place = json.name;
+											const weatherDescription = json.weather[0].description;
+											const weatherIcon = json.weather[0].icon;
+											const weatherIconAdrs = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+						
+											//받아온 정보들을 표현한다. 
+											weatherInfo.innerText = `${temperature} °C / @${place} / ${weatherDescription}`;
+											weatherIconImg.setAttribute('src', weatherIconAdrs);
+										})
+										.catch((error) => console.log("error:", error));
+								}
+						
+								init();
+
+			}
+		</script>
+		
+	</head>
+	<body class="is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Logo -->
+						<h1 id="logo" style="font-size: 50px;">인쌩 <em>착장</em></a></h1>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="javascript:kakaoLogin();index.html;"><img src="https://www.gb.go.kr/Main/Images/ko/member/certi_kakao_login.png" style="height: 60px;width: auto;" class="Kakaoimg"></a></li>
+							</ul>
+						</nav>
+
+				</div>
+
+			<!-- Highlights -->
+				<section class="wrapper style1">
+					<div class="container">
+						<div class="row gtr-200">
+							<section class="col-4 col-12-narrower">
+								<div class="box highlight">
+									<i><img src="https://cdn-icons-png.flaticon.com/512/2324/2324529.png" style="width: 120px;"></i>
+									<h3 id="gender_result"></h3>
+									<p>카카오톡 로그인 api를 이용해 내 성별을 가져옵니다.</p>
+								</div>
+							</section>
+							<section class="col-4 col-12-narrower">
+								<div class="box highlight">
+									<i><img src="https://cdn-icons-png.flaticon.com/512/1828/1828439.png" style="width: 120px;"></i>
+									<h3 id="name_result"></h3>
+									<p>카카오톡 로그인 api를 이용해 내 이름을 가져옵니다.</p>
+								</div>
+							</section>
+							<section class="col-4 col-12-narrower">
+								<div class="box highlight">
+									<i><img src="https://www.seekpng.com/png/full/353-3535410_png-file-time-and-date-png.png" style="width: 120px;"></i>
+									<div id="birthday_result"></div>
+									<p>카카오톡 로그인 api를 이용해 내 연령대을 가져옵니다.</p>
+								</div>
+							</section>
+						</div>
+					</div>
+				</section>
+
+			<!-- 카카오맵 -->
+				<section class="wrapper style2">
+					<div class="container">
+						<header class="major">
+							<div class="weather">
+								<h1>체감 온도</h1>
+								<span class="weatherInfo"></span>
+								<img class="weatherIcon">
+							</div>
+							
+						</header>
+					</div>
+				</section>
+
+			<!-- Posts -->
+				<section class="wrapper style1">
+					<div class="container">
+						<div class="row">
+							<section class="col-6 col-12-narrower">
+								<div class="box post">
+									<a href="#" class="image left"><img src="images/pic01.jpg" alt="" /></a>
+									<div class="inner">
+										<h3>The First Thing</h3>
+										<p>Duis neque nisi, dapibus sed mattis et quis, nibh. Sed et dapibus nisl amet mattis, sed a rutrum accumsan sed. Suspendisse eu.</p>
+									</div>
+								</div>
+							</section>
+							<section class="col-6 col-12-narrower">
+								<div class="box post">
+									<a href="#" class="image left"><img src="images/pic02.jpg" alt="" /></a>
+									<div class="inner">
+										<h3>The Second Thing</h3>
+										<p>Duis neque nisi, dapibus sed mattis et quis, nibh. Sed et dapibus nisl amet mattis, sed a rutrum accumsan sed. Suspendisse eu.</p>
+									</div>
+								</div>
+							</section>
+						</div>
+						<div class="row">
+							<section class="col-6 col-12-narrower">
+								<div class="box post">
+									<a href="#" class="image left"><img src="images/pic03.jpg" alt="" /></a>
+									<div class="inner">
+										<h3>The Third Thing</h3>
+										<p>Duis neque nisi, dapibus sed mattis et quis, nibh. Sed et dapibus nisl amet mattis, sed a rutrum accumsan sed. Suspendisse eu.</p>
+									</div>
+								</div>
+							</section>
+							<section class="col-6 col-12-narrower">
+								<div class="box post">
+									<a href="#" class="image left"><img src="images/pic04.jpg" alt="" /></a>
+									<div class="inner">
+										<h3>The Fourth Thing</h3>
+										<p>Duis neque nisi, dapibus sed mattis et quis, nibh. Sed et dapibus nisl amet mattis, sed a rutrum accumsan sed. Suspendisse eu.</p>
+									</div>
+								</div>
+							</section>
+						</div>
+					</div>
+				</section>
+
+			<!-- CTA -->
+				<section id="cta" class="wrapper style3">
+					<div class="container">
+						<header>
+							<h2>Are you ready to continue your quest?</h2>
+							<a href="#" class="button">Insert Coin</a>
+						</header>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<div id="footer">
+					<div class="container">
+						<div class="row">
+							<section class="col-3 col-6-narrower col-12-mobilep">
+								<h3>Links to Stuff</h3>
+								<ul class="links">
+									<li><a href="#">Mattis et quis rutrum</a></li>
+									<li><a href="#">Suspendisse amet varius</a></li>
+									<li><a href="#">Sed et dapibus quis</a></li>
+									<li><a href="#">Rutrum accumsan dolor</a></li>
+									<li><a href="#">Mattis rutrum accumsan</a></li>
+									<li><a href="#">Suspendisse varius nibh</a></li>
+									<li><a href="#">Sed et dapibus mattis</a></li>
+								</ul>
+							</section>
+							<section class="col-3 col-6-narrower col-12-mobilep">
+								<h3>More Links to Stuff</h3>
+								<ul class="links">
+									<li><a href="#">Duis neque nisi dapibus</a></li>
+									<li><a href="#">Sed et dapibus quis</a></li>
+									<li><a href="#">Rutrum accumsan sed</a></li>
+									<li><a href="#">Mattis et sed accumsan</a></li>
+									<li><a href="#">Duis neque nisi sed</a></li>
+									<li><a href="#">Sed et dapibus quis</a></li>
+									<li><a href="#">Rutrum amet varius</a></li>
+								</ul>
+							</section>
+							<section class="col-6 col-12-narrower">
+								<h3>Get In Touch</h3>
+								<form>
+									<div class="row gtr-50">
+										<div class="col-6 col-12-mobilep">
+											<input type="text" name="name" id="name" placeholder="Name" />
+										</div>
+										<div class="col-6 col-12-mobilep">
+											<input type="email" name="email" id="email" placeholder="Email" />
+										</div>
+										<div class="col-12">
+											<textarea name="message" id="message" placeholder="Message" rows="5"></textarea>
+										</div>
+										<div class="col-12">
+											<ul class="actions">
+												<li><input type="submit" class="button alt" value="Send Message" /></li>
+											</ul>
+										</div>
+									</div>
+								</form>
+							</section>
+						</div>
+					</div>
+
+					<!-- Icons -->
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							<li><a href="#" class="icon brands fa-google-plus-g"><span class="label">Google+</span></a></li>
+						</ul>
+
+					<!-- Copyright -->
+						<div class="copyright">
+							<ul class="menu">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+
+				</div>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        window.Kakao.init("f2f4ca84e67f585b994c3dec20afc648") //인쌩착장 키
+
+        function kakaoLogin() {
+            window.Kakao.Auth.login({
+                scope:'profile_nickname, gender, age_range', //어떤 정보를 받아올지 (키값)
+                success: function (authObj) {
+                console.log(authObj);
+                window.Kakao.API.request({
+                    url:'/v2/user/me', //그냥 정보 받아오는거 
+                    success: res => {
+                        const kakao_account = res.kakao_account; //카카오 정보 변수에 저장
+                        console.log(kakao_account); //변수 확인
+                        var getGenderDiv = document.getElementById('gender_result'); //값 확인
+						var getNameDiv = document.getElementById('name_result');
+						var getBirthdayDiv = document.getElementById('birthday_result');
+						var age = '';
+                        if(kakao_account.gender=='male'){
+                            //getResultDiv.innerHTML = '성별 : 남성         이름 : '+ Object.values(kakao_account.profile); //남성 값 추출
+							getGenderDiv.innerHTML = '남성';
+							getNameDiv.innerHTML = Object.values(kakao_account.profile);
+							age = Object.values(kakao_account.age_range);
+							if(kakao_account.age_range == "20~29"){
+								age = "20대";
+							}
+							else{
+								age = "30대";
+							}
+							//getBirthdayDiv.innerHTML = Object.values(kakao_account.age_range);
+							getBirthdayDiv.innerHTML = age;
+                        }
+                        else
+                                             //getResultDiv.innerHTML = '성별 : 남성         이름 : '+ Object.values(kakao_account.profile); //남성 값 추출
+							getGenderDiv.innerHTML = '여성';
+							getNameDiv.innerHTML = Object.values(kakao_account.profile);
+							if(kakao_account.age_range == "20~29"){
+								age = "20대";
+							}
+							else{
+								age = "30대";
+							}
+							//getBirthdayDiv.innerHTML = Object.values(kakao_account.age_range);
+							getBirthdayDiv.innerHTML = age;
+                        
+                            
+                    }
+                })
+                }
+            });
+        }
+     </script>
+
+	</body>
+</html>
