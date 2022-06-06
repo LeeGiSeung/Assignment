@@ -1,0 +1,641 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>insseng</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f2f4ca84e67f585b994c3dec20afc648"></script>
+		<link href="yong.css" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
+		<script>
+			$(document).ready(function() {
+
+				const latitude = 0;
+				const longitude = 0;
+
+				//카카오맵 시작
+					var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+						mapOption = { 
+							center: new kakao.maps.LatLng(37.21176874330731, 126.9531567973016), // 지도의 중심좌표
+							level: 6 // 지도의 확대 레벨
+						};
+					
+					var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+					
+					
+					// 지도를 클릭한 위치에 표출할 마커입니다
+					var marker = new kakao.maps.Marker({ 
+						// 지도 중심좌표에 마커를 생성합니다 
+						position: map.getCenter() 
+					}); 
+					// 지도에 마커를 표시합니다
+					marker.setMap(map);
+					
+					// 지도에 클릭 이벤트를 등록합니다
+					// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+					kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+						
+						// 클릭한 위도, 경도 정보를 가져옵니다 
+						var latlng = mouseEvent.latLng; 
+						
+						// 마커 위치를 클릭한 위치로 옮깁니다
+						marker.setPosition(latlng);
+
+						kakao_latitude = latlng.getLat();
+						kakao_longitude = latlng.getLng();
+						//const API_KEY = "ce496c0285a5f06e943642c525beb374"; //add your API KEY 
+						const COORDS = 'coords'; //좌표를 받을 변수 
+						
+						//DOM객체들
+						const weatherInfo = document.querySelector('.weatherInfo');
+						const weatherIconImg = document.querySelector('.weatherIcon');
+				
+						//초기화 
+						function init() {
+							askForCoords();
+						}
+				
+						//좌표를 물어보는 함수 
+						function askForCoords() {
+							navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
+						}
+				
+						//좌표를 얻는데 성공했을 때 쓰이는 함수 
+						function handleSuccess(position) {
+							const latitude = kakao_latitude;
+							const longitude = kakao_longitude;
+				
+							getWeather(latitude, longitude); //얻은 좌표값을 바탕으로 날씨정보를 불러온다.
+						}
+						//좌표를 얻는데 실패했을 때 쓰이는 함수 
+						function handleError() {
+							console.log("can't not access to location");
+						}
+				
+						//날씨 api를 통해 날씨에 관련된 정보들을 받아온다. 
+						function getWeather(latitude, longitude) {
+							fetch('https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&appid=ce496c0285a5f06e943642c525beb374&units=metric&lang=kr').then(function (response) {
+								return response.json();
+							})
+								.then(function (json) {
+									//온도, 위치, 날씨묘사, 날씨아이콘을 받는다. 
+									const temperature = json.main.feels_like;
+									const place = json.name;
+									const weatherDescription = json.weather[0].description;
+									const weatherIcon = json.weather[0].icon;
+									const weatherIconAdrs = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+				
+									//받아온 정보들을 표현한다.
+									temInfo = `${temperature}`;
+									
+									if(temInfo >= 26 &&　temInfo < 28)
+                                                $('#tem').val('25');
+                                            else if (temInfo >= 22 && temInfo < 26)
+                                                $('#tem').val('22');
+                                            else if (temInfo <22)
+                                                $('#tem').val('17');
+
+                                    
+									weatherInfo.innerText = `${temperature} °C / @${place} / ${weatherDescription}`;
+									weatherIconImg.setAttribute('src', weatherIconAdrs);
+								})
+								.catch((error) => console.log("error:", error));
+						}
+				
+						init();
+						
+
+						
+					});
+				//카카오맵 끝
+
+		
+					})
+		</script>
+		
+	</head>
+	<body class="is-preload">
+		<div id="page-wrapper">
+			<!-- Header -->
+				<div id="header">
+					<!-- Logo -->
+						<h1 id="logo" style="font-size: 50px;">인쌩 <em>착장</em></a></h1>
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="javascript:kakaoLogin();index.html;"><img src="https://www.gb.go.kr/Main/Images/ko/member/certi_kakao_login.png" style="height: 60px;width: auto;" class="Kakaoimg"></a></li>
+							</ul>
+						</nav>
+				</div>
+
+			<!-- Highlights -->
+				<section class="wrapper style1">
+					<div class="container">
+						<div class="row gtr-200">
+							<section class="col-4 col-12-narrower">
+								<div class="box highlight">
+									<i><img src="https://cdn-icons-png.flaticon.com/512/2324/2324529.png" style="width: 120px;"></i>
+									<h3 id="gender_result"></h3>
+									<p>카카오톡 로그인 api를 이용해 내 성별을 가져옵니다.</p>
+								</div>
+							</section>
+							<section class="col-4 col-12-narrower">
+								<div class="box highlight">
+									<i><img src="https://cdn-icons-png.flaticon.com/512/1828/1828439.png" style="width: 120px;"></i>
+									<h3 id="name_result"></h3>
+									<p>카카오톡 로그인 api를 이용해 내 이름을 가져옵니다.</p>
+								</div>
+							</section>
+							<section class="col-4 col-12-narrower">
+								<div class="box highlight">
+									<i><img src="https://www.seekpng.com/png/full/353-3535410_png-file-time-and-date-png.png" style="width: 120px;"></i>
+									<div id="birthday_result"></div>
+									<p>카카오톡 로그인 api를 이용해 내 연령대을 가져옵니다.</p>
+								</div>
+							</section>
+						</div>
+					</div>
+				</section>
+				<div id="map" style="width:100%;height:500px;">
+				</div>
+				<div id="clickLatlng"></div>
+			<!-- 카카오맵 -->
+				<section class="wrapper style2">
+					<div class="container">
+						<header class="major">
+							<div class="weather">
+								<h1>체감 온도</h1>
+								<span class="weatherInfo"></span>
+								<img class="weatherIcon">
+							</div>
+							
+							<h3>
+								현재 온도: 
+								<select id="tem" value="">
+									<option selected >-선택-</option>
+									<option value="26">26'C 이상</option>
+									<option value="22">22'C 이상 26'C 미만</option>
+									<option value="17">22'C 미만</option>
+								</select>
+								성별: 
+								<select id="gender" value="">
+									<option selected>-선택-</option>
+									<option value="man">남자</option>
+									<option value="woman">여자</option>
+								</select>
+							</h3>
+							<button onclick="change()">입력</button>
+
+					</header>
+				</div>
+			</section>
+
+<!-- Posts -->
+<section class="wrapper style1">
+	<div class="container">
+		<div class="row">
+			<section class="col-6 col-12-narrower">
+				<div class="box post">
+					<a id="imageleftup" href="#" target="_blank" class="image left up"><img id="left-up" src="images/pic01.jpg" alt="" /></a>
+					<div class="inner">
+						<h3 class="left-up-title"></h3>
+						<p class="left-up-contents"></p>
+					</div>
+				</div>
+			</section>
+			<section class="col-6 col-12-narrower">
+				<div class="box post">
+					<a id="imagerightup" href="#" target="_blank" class="image left"><img id="right-up"src="images/pic02.jpg" alt="" /></a>
+					<div class="inner">
+						<h3 class="right-up-title"></h3>
+						<p class="right-up-contents"></p>
+					</div>
+				</div>
+			</section>
+		</div>
+		<div class="row">
+			<section class="col-6 col-12-narrower">
+				<div class="box post">
+					<a id="imageleftdown" href="#" target="_blank" class="image left"><img id="left-down" src="images/pic03.jpg" alt="" /></a>
+					<div class="inner">
+						<h3 class="left-down-title"></h3>
+						<p class="left-down-contents"></p>
+					</div>
+				</div>
+			</section>
+			<section class="col-6 col-12-narrower">
+				<div class="box post">
+					<a id="imagerightdown" href="#" target="_blank" class="image left"><img id="right-down" src="images/pic04.jpg" alt="" /></a>
+					<div class="inner">
+						<h3 class="right-down-title"></h3>
+						<p class="right-down-contents"></p>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</section>
+
+			<!-- CTA -->
+				<section id="cta" class="wrapper style3">
+					<div class="container">
+					</div>
+				</section>
+
+						<div class="copyright">
+							<ul class="menu">
+								<li>&copy; 
+									I did my best</li><li>Platform Design: <a href="http://html5up.net">HTML5 UP</a></li>
+								<li>ⓓDevelopers : 이기승  |  이재문  |  이재문  |  표상연  |  용상현  |  신우혁  |  서성관</li> 
+							</ul>
+						</div>
+
+				</div>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        window.Kakao.init("f2f4ca84e67f585b994c3dec20afc648") //인쌩착장 키
+
+        function kakaoLogin() {
+            window.Kakao.Auth.login({
+                scope:'profile_nickname, gender, age_range', //어떤 정보를 받아올지 (키값)
+                success: function (authObj) {
+                console.log(authObj);
+                window.Kakao.API.request({
+                    url:'/v2/user/me', //그냥 정보 받아오는거 
+                    success: res => {
+                        const kakao_account = res.kakao_account; //카카오 정보 변수에 저장
+                        console.log(kakao_account); //변수 확인
+                        var getGenderDiv = document.getElementById('gender_result'); //값 확인
+						var getNameDiv = document.getElementById('name_result');
+						var getBirthdayDiv = document.getElementById('birthday_result');
+						var age = '';
+                        if(kakao_account.gender=='male'){
+                            //getResultDiv.innerHTML = '성별 : 남성         이름 : '+ Object.values(kakao_account.profile); //남성 값 추출
+							getGenderDiv.innerHTML = '남성';
+							$('#gender').val("man");//우혁
+							getNameDiv.innerHTML = Object.values(kakao_account.profile);
+							age = Object.values(kakao_account.age_range);
+							if(kakao_account.age_range == '20~29')
+								$('#birthday_result').text("20대");
+							else
+                                $('#birthday_result').text("30대");
+
+							if (temInfo >= 26) {
+								//26도~28도
+
+								$('#tem').val("26");
+
+								$('#left-up').attr('src', 'images/man/man26_1.jpg');
+								$('#imageleftup').attr('href', 'https://www.hiver.co.kr/');
+								$('.left-up-title').text('1번 추천');
+								$('.left-up-contents').text(`상의: 린넨 셔츠　　　　　　　
+								　　　　　　　　 하의: 와이드 팬트 (흰)`);
+										
+								$('#right-up').attr('src', 'images/man/man26_2.jpg');
+								$('#imagerightup').attr('href', 'https://www.hiver.co.kr/');
+								$('.right-up-title').text('2번 추천');
+								$('.right-up-contents').text(`상의: 반팔티, 니트조끼　　　　　　　
+								　　　　　　　　 하의: 검정 슬랙스`);
+
+								$('#left-down').attr('src', '#');
+								$('#imageleftdown').attr('href', '#');
+								$('.left-down-title').text('');
+								$('.left-down-contents').text('');
+
+								$('#right-down').attr('src', '#');
+								$('#imagerightdown').attr('href', '#')
+								$('.right-down-title').text('');
+								$('.right-down-contents').text('');
+							}
+							else if (temInfo >= 22 && temInfo < 26) {
+								//22도~25도
+								$('#tem').val('22');
+								
+								$('#left-up').attr('src', 'images/man/man22_1.jpg');
+								$('#imageleftup').attr('href', 'https://www.musinsa.com/app/');
+								$('.left-up-title').text('1번 추천');
+								$('.left-up-contents').text(`상의: 흰색셔츠 (Freesize)　　　　　　　
+								　　　　　　　　 하의: 회색 와이드 팬츠`);
+										
+								$('#right-up').attr('src', 'images/man/man22_2.jpg');
+								$('#imagerightup').attr('href', 'https://www.musinsa.com/app/');
+								$('.right-up-title').text('2번 추천');
+								$('.right-up-contents').text(`상의: 검정 티셔츠　　　　　　　
+								　　　　　　　　 하의: 와이드 흑청`);
+
+								$('#left-down').attr('src', '#');
+								$('#imageleftdown').attr('href', '#');
+								$('.left-down-title').text('');
+								$('.left-down-contents').text('');
+
+								$('#right-down').attr('src', '#');
+								$('#imagerightdown').attr('href', '#')
+								$('.right-down-title').text('');
+								$('.right-down-contents').text('');
+							}
+							else if (temInfo < 22 ) {
+								$('#tem').val('17');
+								
+								$('#left-up').attr('src', 'images/man/man17_1.jpg');
+								$('#imageleftup').attr('href', 'https://www.musinsa.com/app/');
+								$('.left-up-title').text('1번 추천');
+								$('.left-up-contents').text(`자켓 : 가죽 자켓　　　　　　　
+								　　　　　　　　 상의: 조끼니트　　　　　　　
+								　　　　　　　　 하의: 생지데님 와이드 팬츠`);
+										
+								$('#right-up').attr('src', 'images/man/man17_2.jpg');
+								$('#imagerightup').attr('href', 'https://www.musinsa.com/app/');
+								$('.right-up-title').text('2번 추천');
+								$('.right-up-contents').text(`자켓 : 청자켓　　　　　　　
+								　　　　　　　　 상의: 패턴 티셔츠　　　　　　　
+								　　　　　　　　 하의: 생지 와이드 팬츠`);
+
+								$('#left-down').attr('src', 'images/man/man17_3.jpg');
+								$('#imageleftdown').attr('href', 'https://www.musinsa.com/app/');
+								$('.left-down-title').text('3번 추천');
+								$('.left-down-contents').text(`상의: 흰색 셔츠, 갈색 니트조끼`);
+
+								$('#right-down').attr('src', '#');
+								$('#imagerightdown').attr('href', '#')
+								$('.right-down-title').text('');
+								$('.right-down-contents').text('');
+							}
+					
+							//getBirthdayDiv.innerHTML = Object.values(kakao_account.age_range);
+							getBirthdayDiv.innerHTML = age;
+                        }
+                        else{
+                                             //getResultDiv.innerHTML = '성별 : 남성         이름 : '+ Object.values(kakao_account.profile); //남성 값 추출
+							getGenderDiv.innerHTML = '여성';
+							getNameDiv.innerHTML = Object.values(kakao_account.profile);
+						    $('#gender').val('woman');
+							if(kakao_account.age_range == '20~29')
+								$('#birthday_result').text("20대");
+							else
+                                $('#birthday_result').text("30대");
+							if(temInfo >= 26){
+								//28도 이상
+								$('#tem').val("26");
+
+								$('#left-up').attr('src', 'images/woman/woman26_1.jpg');
+								$('#imageleftup').attr('href', 'https://www.instagram.com/p/CduOctIppHk/');
+								$('.left-up-title').text('1번 추천');
+								$('.left-up-contents').text(`상의: 썸머홀가먼트 니트　　　　　　　
+								　　　　　　　　 하의: 여름 위너 슬랙스`);
+										
+								$('#right-up').attr('src', 'images/woman/woman26_2.jpg');
+								$('#imagerightup').attr('href', 'https://www.instagram.com/p/CecmJVipEaf/');
+								$('.right-up-title').text('2번 추천');
+								$('.right-up-contents').text(`상의: 썸머홀가먼트 니트　　　　　　　
+								　　　　　　　　 하의: 여름 위너 슬랙스`);
+
+								$('#left-down').attr('src', '#');
+								$('#imageleftdown').attr('href', '#');
+								$('.left-down-title').text('');
+								$('.left-down-contents').text('');
+
+								$('#right-down').attr('src', '#');
+								$('#imagerightdown').attr('href', '#');
+								$('.right-down-title').text('');
+								$('.right-down-contents').text('');
+							}
+							else if (temInfo >= 22 && temInfo < 26) {
+								//23도~27도
+
+								$('#tem').val("22");
+
+								$('#left-up').attr('src', 'images/woman/woman22_1.jpg');
+								$('#imageleftup').attr('href', 'https://www.instagram.com/maisonde2/');
+								$('.left-up-title').text('1번 추천');
+								$('.left-up-contents').text(`상의: 썸머스프라이트 니트　　　　　　　
+								　　　　　　　　 하의: 여름 포멀 슬랙스`);
+										
+								$('#right-up').attr('src', 'images/woman/woman22_2.jpg');
+								$('#imagerightup').attr('href', 'https://www.instagram.com/p/CbG5wiCpcI1/');
+								$('.right-up-title').text('2번 추천');
+								$('.right-up-contents').text(`상의: 리즈 스트라이츠 셔츠　　　　　　　
+								　　　　　　　　 하의: 생지 데님`);
+
+								$('#left-down').attr('src', 'images/woman/woman22_3.jpg');
+								$('#imageleftdown').attr('href', 'https://www.instagram.com/maisonde2/');
+								$('.left-down-title').text('3번 추천');
+								$('.left-down-contents').text(`상의: 랩니트　　　　　　　
+								　　　　　　　　 하의: 메종드 트위드 스커트`);
+
+								$('#right-down').attr('src', '#');
+								$('#imagerightdown').attr('href', '#');
+								$('.right-down-title').text('');
+								$('.right-down-contents').text('');
+							}
+							else if (temInfo < 22) {
+								$('#tem').val('17');
+								
+								$('#left-up').attr('src', 'images/woman/woman17_1.jpg');
+								$('#imageleftup').attr('href', 'https://www.instagram.com/p/CeSQLuFJ2m4/');
+								$('.left-up-title').text('1번 추천');
+								$('.left-up-contents').text(`도브 원피스`);
+										
+								$('#right-up').attr('src', 'images/woman/woman17_2.jpg');
+								$('#imagerightup').attr('href', 'https://www.instagram.com/p/CceVG3wPrlJ/');
+								$('.right-up-title').text('2번 추천');
+								$('.right-up-contents').text(`상의: 시어서커 스프라이트 셔츠　　　　　　　
+								　　　　　　　　 하의: 상지 데님`);
+
+								$('#left-down').attr('src', '#');
+								$('#imageleftdown').attr('href', '#');
+								$('.left-down-title').text('');
+								$('.left-down-contents').text('');
+
+								$('#right-down').attr('src', '#');
+								$('#imagerightdown').attr('href', '#');
+								$('.right-down-title').text('');
+								$('.right-down-contents').text('');
+							}
+
+							//getBirthdayDiv.innerHTML = Object.values(kakao_account.age_range);
+							getBirthdayDiv.innerHTML = age;
+						}
+                            
+                    }
+                })
+                }
+            });
+        }
+
+		function change() {
+			
+				if($('#tem').val() == '26' && $('#gender').val() == 'man'){
+					//남자 20대
+					// 26~28도 
+
+						$('#left-up').attr('src', 'images/man/man26_1.jpg');
+						$('#imageleftup').attr('href', 'https://www.hiver.co.kr/');
+						$('.left-up-title').text('1번 추천');
+						$('.left-up-contents').text(`상의: 린넨 셔츠　　　　　　　
+						　　　　　　　　 하의: 와이드 팬트 (흰)`);
+								
+						$('#right-up').attr('src', 'images/man/man26_2.jpg');
+						$('#imagerightup').attr('href', 'https://www.hiver.co.kr/');
+						$('.right-up-title').text('2번 추천');
+						$('.right-up-contents').text(`상의: 반팔티, 니트조끼　　　　　　　
+						　　　　　　　　 하의: 검정 슬랙스`);
+
+						$('#left-down').attr('src', '#');
+						$('#imageleftdown').attr('href', '#');
+						$('.left-down-title').text('');
+						$('.left-down-contents').text('');
+
+						$('#right-down').attr('src', '#');
+						$('#imagerightdown').attr('href', '#')
+						$('.right-down-title').text('');
+						$('.right-down-contents').text('');
+					}
+				else if ($('#tem').val() == '22' && $('#gender').val() == 'man') {
+						//22도~25도
+
+						$('#left-up').attr('src', 'images/man/man22_1.jpg');
+						$('#imageleftup').attr('href', 'https://www.musinsa.com/app/');
+						$('.left-up-title').text('1번 추천');
+						$('.left-up-contents').text(`상의: 흰색셔츠 (Freesize)　　　　　　　
+						　　　　　　　　 하의: 회색 와이드 팬츠`);
+								
+						$('#right-up').attr('src', 'images/man/man22_2.jpg');
+						$('#imagerightup').attr('href', 'https://www.musinsa.com/app/');
+						$('.right-up-title').text('2번 추천');
+						$('.right-up-contents').text(`상의: 검정 티셔츠　　　　　　　
+						　　　　　　　　 하의: 와이드 흑청`);
+
+						$('#left-down').attr('src', '#');
+						$('#imageleftdown').attr('href', '#');
+						$('.left-down-title').text('');
+						$('.left-down-contents').text('');
+
+						$('#right-down').attr('src', '#');
+						$('#imagerightdown').attr('href', '#')
+						$('.right-down-title').text('');
+						$('.right-down-contents').text('');
+						}
+				else if ($('#tem').val() == '17' && $('#gender').val() == 'man') {
+
+								
+						$('#left-up').attr('src', 'images/man/man17_1.jpg');
+						$('#imageleftup').attr('href', 'https://www.musinsa.com/app/');
+						$('.left-up-title').text('1번 추천');
+						$('.left-up-contents').text(`자켓 : 가죽 자켓　　　　　　　
+						　　　　　　　　 상의: 조끼니트　　　　　　　
+						　　　　　　　　 하의: 생지데님 와이드 팬츠`);
+								
+						$('#right-up').attr('src', 'images/man/man17_2.jpg');
+						$('#imagerightup').attr('href', 'https://www.musinsa.com/app/');
+						$('.right-up-title').text('2번 추천');
+						$('.right-up-contents').text(`자켓 : 청자켓　　　　　　　
+						　　　　　　　　 상의: 패턴 티셔츠　　　　　　　
+						　　　　　　　　 하의: 생지 와이드 팬츠`);
+
+						$('#left-down').attr('src', 'images/man/man17_3.jpg');
+						$('#imageleftdown').attr('href', 'https://www.musinsa.com/app/');
+						$('.left-down-title').text('3번 추천');
+						$('.left-down-contents').text(`상의: 흰색 셔츠, 갈색 니트조끼`);
+
+						$('#right-down').attr('src', '#');
+						$('#imagerightdown').attr('href', '#')
+						$('.right-down-title').text('');
+						$('.right-down-contents').text('');
+					}
+					
+				else if ($('#tem').val() == '26' && $('#gender').val() == 'woman') {
+
+						//28도 이상
+
+						$('#left-up').attr('src', 'images/woman/woman26_1.jpg');
+						$('#imageleftup').attr('href', 'https://www.instagram.com/p/CduOctIppHk/');
+						$('.left-up-title').text('1번 추천');
+						$('.left-up-contents').text(`상의: 썸머홀가먼트 니트　　　　　　　
+						　　　　　　　　 하의: 여름 위너 슬랙스`);
+								
+						$('#right-up').attr('src', 'images/woman/woman26_2.jpg');
+						$('#imagerightup').attr('href', 'https://www.instagram.com/p/CecmJVipEaf/');
+						$('.right-up-title').text('2번 추천');
+						$('.right-up-contents').text(`상의: 썸머홀가먼트 니트　　　　　　　
+						　　　　　　　　 하의: 여름 위너 슬랙스`);
+
+						$('#left-down').attr('src', '#');
+						$('#imageleftdown').attr('href', '#');
+						$('.left-down-title').text('');
+						$('.left-down-contents').text('');
+
+						$('#right-down').attr('src', '#');
+						$('#imagerightdown').attr('href', '#');
+						$('.right-down-title').text('');
+						$('.right-down-contents').text('');
+						}
+				else if ($('#tem').val() == '22' && $('#gender').val() == 'woman') {
+						//23도~27도
+
+
+						$('#left-up').attr('src', 'images/woman/woman22_1.jpg');
+						$('#imageleftup').attr('href', 'https://www.instagram.com/maisonde2/');
+						$('.left-up-title').text('1번 추천');
+						$('.left-up-contents').text(`상의: 썸머스프라이트 니트　　　　　　　
+						　　　　　　　　 하의: 여름 포멀 슬랙스`);
+								
+						$('#right-up').attr('src', 'images/woman/woman22_2.jpg');
+						$('#imagerightup').attr('href', 'https://www.instagram.com/p/CbG5wiCpcI1/');
+						$('.right-up-title').text('2번 추천');
+						$('.right-up-contents').text(`상의: 리즈 스트라이츠 셔츠　　　　　　　
+						　　　　　　　　 하의: 생지 데님`);
+
+						$('#left-down').attr('src', 'images/woman/woman22_3.jpg');
+						$('#imageleftdown').attr('href', 'https://www.instagram.com/maisonde2/');
+						$('.left-down-title').text('3번 추천');
+						$('.left-down-contents').text(`상의: 랩니트　　　　　　　
+						　　　　　　　　 하의: 메종드 트위드 스커트`);
+
+						$('#right-down').attr('src', '#');
+						$('#imagerightdown').attr('href', '#');
+						$('.right-down-title').text('');
+						$('.right-down-contents').text('');
+					}
+				else if ($('#tem').val() == '17' && $('#gender').val() == 'woman') {
+
+						//20도~22도
+								
+						$('#left-up').attr('src', 'images/woman/woman17_1.jpg');
+						$('#imageleftup').attr('href', 'https://www.instagram.com/p/CeSQLuFJ2m4/');
+						$('.left-up-title').text('1번 추천');
+						$('.left-up-contents').text(`도브 원피스`);
+								
+						$('#right-up').attr('src', 'images/woman/woman17_2.jpg');
+						$('#imagerightup').attr('href', 'https://www.instagram.com/p/CceVG3wPrlJ/');
+						$('.right-up-title').text('2번 추천');
+						$('.right-up-contents').text(`상의: 시어서커 스프라이트 셔츠　　　　　　　
+						　　　　　　　　 하의: 상지 데님`);
+
+						$('#left-down').attr('src', '#');
+						$('#imageleftdown').attr('href', '#');
+						$('.left-down-title').text('');
+						$('.left-down-contents').text('');
+
+						$('#right-down').attr('src', '#');
+						$('#imagerightdown').attr('href', '#');
+						$('.right-down-title').text('');
+						$('.right-down-contents').text('');
+					}
+	}
+     </script>
+
+	</body>
+</html>
