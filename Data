@@ -1,0 +1,59 @@
+from itertools import count
+import tweepy
+
+#f = open("축제.txt","a", encoding='utf-8')
+#keyword = "축제"
+#f = open("득템.txt","a", encoding='utf-8')
+#keyword = "득템"
+#f = open("물가.txt","a", encoding='utf-8')
+#keyword = "물가"
+#f = open("백신.txt","a", encoding='utf-8')
+#keyword = "백신"
+#f = open("비트코인.txt","a", encoding='utf-8')
+#keyword = "비트코인"
+#f = open("여름휴가.txt","a", encoding='utf-8')
+#keyword = "여름휴가"
+#f = open("유행.txt","a", encoding='utf-8')
+#keyword = "유행"
+#f = open("축제.txt","a", encoding='utf-8')
+#keyword = "축제"
+#f = open("치킨.txt","a", encoding='utf-8')
+#keyword = "치킨"
+#f = open("코로나.txt","a", encoding='utf-8')
+#keyword = "코로나"
+#f = open("포켓몬빵.txt","a", encoding='utf-8')
+#keyword = "포켓몬빵"
+#f = open("폭염.txt","a", encoding='utf-8')
+#keyword = "폭염"
+#f = open("개강.txt","a", encoding='utf-8')
+#keyword = "개강"
+f = open("MZ.txt","a", encoding='utf-8')
+keyword = "MZ"
+
+Result_Count = 10
+Search_Count = 1
+
+ACCESS_TOKEN = "1545450969022234624-pPIaFUoLP3guAExZLGcxHtydkzhVlC"
+ACCESS_SECRET = "YKPFmoW5p2sO51pJ0LMQWy7Ekrlaaz57YrWq4REyp7Iac"
+CONSUMER_KEY = "NubWSaPSQ5h223vdmdgRBVR5S"
+CONSUMER_SECRET = "HoPnsrSAGaR67t1lAqEGg2ycOFLZaGkf8ysw28jBtBg1X4VSYA"
+
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+
+auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
+
+api = tweepy.API(auth)
+
+result = []
+
+public_tweets = api.search_tweets(keyword,count=100)
+for tweet in public_tweets:
+    result.append(tweet.text)
+    f.write(tweet.text)
+for text in result:
+    print(text)
+    print(str(Search_Count)+"번째 트윗")
+    Search_Count = Search_Count + 1
+
+f.close()
+    
