@@ -1,0 +1,113 @@
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
+import numpy as np
+from numpy import dot
+from numpy.linalg import norm
+
+documents = {
+'먹고 싶은 사과',
+'먹고 싶은 바나나',
+'길고 노란 바나나 바나나',
+'저는 과일이 좋아요'
+}
+
+doc1 = '먹고 싶은 사과'
+doc2 = '먹고 싶은 바나나'
+doc3 = '길고 노란 바나나 바나나'
+doc4 = '저는 과일이 좋아요'
+
+
+
+
+
+################DTM##################
+def doc(*args):
+    doc_list = []
+    df = pd.DataFrame()
+    for i in args:
+        # 단어 분해
+        tmp_list = i.split(' ')
+        # 리스트 결합
+        doc_list += tmp_list
+    doc_list = list(set(doc_list))
+    for i in doc_list:
+        tmp = []
+        for j in args:
+            # 단어 분해
+            tmp_list = j.split(' ')
+            # 단어 세기
+            tmp.append(tmp_list.count(i))
+        # 데이터 프레임 추가
+        df[i] = tmp
+    return df
+
+DTM_result = doc(doc1, doc2, doc3, doc4)
+################DTM_END##################
+
+
+
+
+
+################TD/IDF##################
+# TF-IDF 점수 변환 모델 준비
+tf_idf_model = TfidfVectorizer().fit(documents)
+
+# 단어 이름 리스트 순서대로 반환(0번으로 지정된 토큰부터)
+word_id_list = sorted(tf_idf_model.vocabulary_.items(), key=lambda x: x[1], reverse=False)
+word_list = [x[0] for x in word_id_list]
+
+# 용이한 시각화를 위하여 데이터프레임 변환
+Tf_idf_result = pd.DataFrame(tf_idf_model.transform(documents).toarray(), columns = word_list, index = ['문서1', '문서2', '문서3', '문서4'])
+################TD/IDF_END##################
+
+
+
+
+
+################코사인 백터 유사도##################
+def cos_sim(A, B):
+  return dot(A, B)/(norm(A)*norm(B))
+
+문서1 = np.array([1,0,0,0,1,0,1,0,0])
+문서2 = np.array([1,0,0,0,0,0,1,1,0])
+문서3 = np.array([0,1,1,0,0,0,0,2,0])
+문서4 = np.array([0,0,0,1,0,1,0,0,1])
+
+문서1_result = cos_sim(문서1,문서2)
+문서2_result = cos_sim(문서1,문서3)
+문서3_result = cos_sim(문서1,문서4)
+
+문서4_result = cos_sim(문서2,문서3)
+
+cos5_result = cos_sim(문서3,문서4)
+
+################코사인 백터 유사도 끝~##############
+
+################결과 창###################
+print("문서 1 :"+str(doc1))
+print("문서 2 :"+str(doc2))
+print("문서 3 :"+str(doc3))
+print("문서 4 :"+str(doc4))
+
+print()
+print("DTM 결과")
+print(DTM_result)
+print()
+print("TD/IDF 결과")
+print(Tf_idf_result)
+
+print()
+print("문서 1 :"+str(doc1))
+print("문서 2 :"+str(doc2))
+print("문서 3 :"+str(doc3))
+print("문서 4 :"+str(doc4))
+
+
+print()
+print('문서 1과 문서2의 유사도 : ', 문서1_result)
+print('문서 1과 문서3의 유사도 : ', 문서2_result)
+print('문서 1과 문서4의 유사도 : ', 문서3_result)
+print('문서 2과 문서3의 유사도 : ', 문서4_result)
+print('문서 3과 문서4의 유사도 : ', cos5_result)
+################결과 창 끝~###################
