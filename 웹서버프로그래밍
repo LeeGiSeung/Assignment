@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예제 문서</title>
+</head>
+<body>
+    <!-- 문장을 작성합시다.<br>
+    문장을 작성합시다.<br>
+    문장을 작성합시다.<br>
+    <a href="https://www.uhs.ac.kr/intro/index.html" target="_blank" style="text-align: center;"><img src="https://th.bing.com/th/id/OIP.UYKwCCjHZnnjupkkDh60jQHaHu?w=153&h=180&c=7&r=0&o=5&pid=1.7" alt="협성대학교 로고" title="협성대학교의 로고입니다." >협성대로 이동</a> -->
+        <pre>
+    <table align="center" border="1">
+        <caption>시간표</caption>
+        <tr align="center">
+            <td>교시/요일</td>
+            <td>월</td>
+            <td>화</td>
+            <td>수</td>
+            <td>목</td>
+            <td>금</td>
+        </tr>
+        <tr align="center">
+            <th>1</th>
+            <th></th>
+            <th>청소년자기이해</th>
+            <th></th>
+            <th>자료구조</th>
+            <th></th>
+        </tr>
+        <tr align="center">
+            <th>2</th>
+            <th></th>
+            <th>청소년자기이해</th>
+            <th></th>
+            <th>자료구조</th>
+            <th></th>
+        </tr>
+        <tr align="center">
+            <th>3</th>
+            <th></th>
+            <th>청소년자기이해</th>
+            <th></th>
+            <th>자료구조</th>
+            <th></th>
+        </tr>
+        <tr align="center">
+            <th>4</th>
+            <th></th>
+            <th>청소년자기이해</th>
+            <th></th>
+            <th>자료구조</th>
+            <th></th>
+        </tr>
+        <tr align="center">
+            <th>5</th>
+            <th></th>
+            <th></th>
+            <th>               </th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr align="center">
+            <th>6</th>
+            <th>데이터베이스 응용</th>
+            <th>웹서버프로그래밍</th>
+            <th></th>
+            <th>데이터 통신</th>
+            <th>컴퓨터 구조</th>
+        </tr>
+        <tr align="center">
+            <th>7</th>
+            <th>데이터베이스 응용</th>
+            <th>웹서버프로그래밍</th>
+            <th></th>
+            <th>데이터 통신</th>
+            <th>컴퓨터 구조</th>
+        </tr>
+        <tr align="center">
+            <th>8</th>
+            <th>데이터베이스 응용</th>
+            <th>웹서버프로그래밍</th>
+            <th></th>
+            <th>데이터 통신</th>
+            <th>컴퓨터 구조</th>
+        </tr>
+        <tr align="center">
+            <th>9</th>
+            <th></th>
+            <th>웹서버프로그래밍</th>
+            <th></th>
+            <th>4차 산업혁명 상담</th>
+            <th></th>
+        </tr>
+    </table>
+</pre>
+</body>
+</html>
