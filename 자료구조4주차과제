@@ -1,0 +1,119 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Task {
+	
+	void makeArray(int row, int column) {
+		int [][] a = new int[row][column];
+		int [][] b = new int[row][column];
+		int [][] sum2 = new int[row][column];
+		int [][] sum1 = new int[row][column];
+		Random r = new Random();
+		
+		for(int i = 0; i<row; i++) {
+			for(int z = 0; z<column; z++) {
+				
+				int Rvalue = r.nextInt(10);
+				a[i][z] = Rvalue;
+//				System.out.println(a[i][z]);
+				
+				Rvalue = r.nextInt(10);
+				b[i][z] = Rvalue;
+//				System.out.println(b[i][z]);
+			}
+			
+		}
+		
+		
+		System.out.println("****a행렬");
+		for(int one = 0; one<row; one++) {
+			for(int two = 0; two<column; two++) {
+				System.out.printf(a[one][two]+"    ");
+			}
+			System.out.println();
+		}
+		
+		//나누기
+		System.out.println();
+		
+		System.out.println("****b행렬");
+		for(int one = 0; one<row; one++) {
+			for(int two = 0; two<column; two++) {
+				System.out.printf(b[one][two]+"    ");
+			}
+			System.out.println();
+		}
+		//나누기
+		System.out.println();
+		
+		System.out.println("****a와 b의 짝수의 합");
+		
+		for(int one = 0; one<row; one++) {
+			for(int two = 0; two<column; two++) {
+				int result = a[one][two] + b[one][two];
+				if(a[one][two]%2==0&&b[one][two]%2==0) {
+					sum2[one][two] = result;
+				}
+				else {
+					sum2[one][two] = a[one][two];
+				}
+			}
+			
+		}
+		
+		for(int one = 0; one<row; one++) {
+			for(int two = 0; two<column; two++) {
+				System.out.printf(sum2[one][two]+"    ");
+			}
+			System.out.println();
+		}
+		
+		//나누기
+		System.out.println();
+		
+		System.out.println("****a와 b의 홀수의 합");
+		
+		for(int one = 0; one<row; one++) {
+			for(int two = 0; two<column; two++) {
+				int result = a[one][two] + b[one][two];
+				if((a[one][two]%2==1)&&b[one][two]%2==1) {
+					sum2[one][two] = result;
+				}
+				else {
+					sum2[one][two] = a[one][two];
+				}
+			}
+			
+		}
+		
+		for(int one = 0; one<row; one++) {
+			for(int two = 0; two<column; two++) {
+				System.out.printf(sum2[one][two]+"    ");
+			}
+			System.out.println();
+		}
+		
+		
+		
+			
+	}	
+	
+	public static void main(String[] args) {
+		
+		Task tk = new Task();
+		int row = 0;
+		int column = 0;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.printf("행을 입력하세요(2~5) : ");
+		row = sc.nextInt();
+		System.out.printf("열을 입력하세요(2~5) : ");
+		column = sc.nextInt();
+		
+		//여기서 람다식 사용 배열제작
+		tk.makeArray(row, column);
+			
+	}
+}
+
+
