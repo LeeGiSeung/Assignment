@@ -1,0 +1,51 @@
+
+
+.head{
+    background-color: red; 
+    height: 180px; 
+    width: 1430px;
+    margin: auto;
+}
+
+.title{
+    text-align: center; 
+    padding: 30px; 
+    font-weight:bold;
+}
+
+/* .main_Menu{
+    margin-left: 90px; 
+    background-color: green;
+    font-size: 20px;
+    font-weight: bold;
+    width: 30%;
+    margin-top: 10px;
+} */
+
+.main_Top{background-color: blue; 
+    height: 400px; 
+    width: 1430px; 
+    margin-top: 50px;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.main_top_pre{
+    color: red;
+}
+
+.main_Top_Insert_img{
+    width: 450px; 
+    height: 400px;
+    background-color: brown;
+    float: left;
+    border-radius: 10px;
+}
+
+
+.main_Top_Insert_text{
+    height: 400px;
+    width: 980px;
+    background-color: aquamarine;
+    float: left;
+}

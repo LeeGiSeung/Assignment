@@ -1,0 +1,7 @@
+.uhs{color: blue; background-color: aliceblue; text-decoration: none;}
+.uhs:hover{text-decoration: underline;}
+input:focus{background-color: darkolivegreen; color: blue;}
+h1{background-color: aqua;}
+/* a:link{background-color: blue; text-decoration: none;} */
+b{color: yellowgreen; font-size: 50px;}
+.red{color: blueviolet; font-weight: bold;}
