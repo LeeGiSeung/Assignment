@@ -1,0 +1,127 @@
+# from itertools import count
+# from tkinter.tix import COLUMN
+import tweepy
+# from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
+import numpy as np
+from numpy import dot
+from numpy.linalg import norm
+# import os
+# from itertools import count
+import pandas as pd # 데이터프레임 사용을 위해
+from math import log # IDF 계산을 위해
+from tqdm import tqdm
+# from sklearn.metrics.pairwise import cosine_similarity
+pd.set_option('display.max_seq_items', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+keyword=["MZ세대"]
+# keyword=["개강"]
+
+ACCESS_TOKEN = "1545450969022234624-pPIaFUoLP3guAExZLGcxHtydkzhVlC"
+ACCESS_SECRET = "YKPFmoW5p2sO51pJ0LMQWy7Ekrlaaz57YrWq4REyp7Iac"2
+CONSUMER_KEY = "NubWSaPSQ5h223vdmdgRBVR5S"
+CONSUMER_SECRET = "HoPnsrSAGaR67t1lAqEGg2ycOFLZaGkf8ysw28jBtBg1X4VSYA"
+
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+
+auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
+
+api = tweepy.API(auth)
+
+docs = []
+
+# 09/15
+# 크롤링을 어떻게 하면될까?
+# 코드를 여러번 돌리면 안되고 이 크롤링 코드만 돌리면됨
+# 시간 1시간에 한번씩 하는걸로 돌리고 자보자
+# 돌리다 컴퓨터가 꺼진다... 개똥컴 ㅋㅋㅋㅋ
+public_tweets = api.search(keyword,count=100)
+for tweet in tqdm(public_tweets, desc="트위터 크롤링중", mininterval=0.01):
+    docs.append(tweet.text)
+    print(tweet.text)
+
+# 09/17
+# 저장할때 1시간에 1번씩 하지말고(너무 무식함)
+# 응프(자바스크립트)때 교수님께서 조언해주신거처럼 내가 서버를 연다음에 그안에 트위터를 저장해서 빼고 처리해보도록
+# 불용어처리는 일단 konlp는 안되니까 넘기고 내가 직접 만들어보자 안되면 konlp말고 
+# 영어트위터글 긁어온 다음에 nltk 써보는걸로(이건 됐으니까)
+# adsf.py 마지막글 가서 해결하고와 파이썬 공부좀하자;;;;
+stop_word = ['(실례일까봐)']
+
+vocab = list(set(w for doc in docs for w in doc.split()))
+# 정렬하는거임
+vocab.sort()
+
+# print("불용어 처리 전 vocab")
+# print(vocab)
+
+# 불용어 처리하자
+for i in range(len(vocab)-1):
+  if vocab[i] in stop_word:
+    del vocab[i]
+  else:
+    continue
+
+vocab.sort()
+# print("불용어 처리 후 vocab")
+# print(vocab)
+
+
+# 총 문서의 수
+N = len(docs) 
+
+def tf(t, d):
+  return d.count(t)
+
+def idf(t):
+  df = 0
+  for doc in docs:
+    df += t in doc
+  return log(N/(df+1))
+
+def tfidf(t, d):
+  return tf(t,d)* idf(t)
+
+result = []
+
+# 각 문서에 대해서 아래 연산을 반복
+for i in range(N):
+  result.append([])
+  d = docs[i]
+  for j in range(len(vocab)):
+    t = vocab[j]
+    result[-1].append(tf(t, d))
+
+tf_ = pd.DataFrame(result, columns = vocab)
+
+result = []
+for j in range(len(vocab)):
+    t = vocab[j]
+    result.append(idf(t))
+
+#https://dsbook.tistory.com/12
+# 이곳 참고해보셈 윤진이가 알려주긴했는데 그래도 공부는 해보자
+#idf_ = pd.DataFrame(result, index=vocab, columns=vocab[0:4])
+idf_ = pd.DataFrame(result, index=vocab, columns=["IDF"])
+
+result = []
+for i in range(N):
+  result.append([])
+  d = docs[i]
+  for j in range(len(vocab)):
+    t = vocab[j]
+    result[-1].append(tfidf(t,d))
+
+tfidf_ = pd.DataFrame(result, columns = vocab)
+
+# f = open("TFIDF(개강).txt","a", encoding='utf-8')
+# f.write(str(tfidf_))
+# f.close()
+
+f = open("TFIDF(MZ).csv","a", encoding='utf-8')
+f.write(str(tfidf_))
+f.close()
+
