@@ -1,0 +1,129 @@
+a{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+
+/* 교토 타이틀 */
+.head{
+    /* background-color: red;  */
+    height: 150px; 
+    width: 1430px;
+    margin: auto;
+    background-image: url(https://www.pandotrip.com/wp-content/uploads/2018/12/Top-Things-to-do-in-Japan-in-winter.jpg);
+}
+.title{
+    text-align: center; 
+    padding: 30px; 
+    font-weight:bold;
+    font-size: 70px;
+    color: white;
+}
+/* 교토 타이틀 끝 */
+
+
+
+/* 각 구 설명 */
+nav{
+    /* background-color: coral; */
+    width: 1430px; 
+    height: 100px;
+    margin: auto;
+}
+.Nav_li>li{
+    list-style: none;
+    display: inline;
+    margin: 0 100px;
+    font-size: 25px;
+}
+/* 각 구 설명 끝 */
+
+
+
+/* 메인 교토 시 설명 */
+.main_Top{
+    /* background-color: blue;  */
+    height: 450px; 
+    width: 1430px; 
+    margin-top: 50px;
+    margin: auto;
+    border-radius: 5px;
+}
+.main_top_pre{
+    /* color: red; */
+}
+.main_Top_Insert_img{
+    width: 450px; 
+    height: 400px;
+    /* background-color: brown; */
+    float: left;
+    border-radius: 10px;
+}
+.main_Top_Insert_text{
+    height: 400px;
+    width: 980px;
+    /* background-color: aquamarine; */
+    float: left;
+}
+/* 메인 쿄토시 설명 끝 */
+
+/* 메인 미들 */
+.main_middle{
+    /* background-color: gray; */
+    height: 350px;
+    width: 1430px;
+    margin-top: 50px;
+    margin: auto;
+}
+.main_middle_Insert_img{
+    width: 320px;
+    height: 320px;
+    /* background-color: aqua; */
+    float: left;
+}
+.main_middle_text{
+    height: 320px;
+    width: 1110px;
+    float: left;
+}
+/* 메인 미들 끝 */
+
+.main_under{
+    height: 400px;
+    width: 1430px;
+    margin-top: 50px;
+    margin: auto;
+}
+
+/* 메인 언더 */
+.main_under_left{
+    width: 476px;
+    height: 400px;
+    float:left;
+    /* background-color: chartreuse; */
+}
+.main_under_middle{
+    width: 476px;
+    height: 400px;
+    float:left;
+    /* background-color: yellow; */
+}
+.main_under_right{
+    width: 476px;
+    height: 400px;
+    float:left;
+    /* background-color: red; */
+}
+
+
+
+/* 메인 언더 끝 */
+
+
+footer{
+    width: 1430px;
+    margin: auto;
+    height: 200px;
+    background-color: deeppink;
+}
