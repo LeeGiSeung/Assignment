@@ -1,0 +1,55 @@
+# 이름(name), 색(color), 구동방식(wheels), 속도(speed) 세팅
+# 생성자는 이름은 "mycar", 색은 "blue", 구동방식은 0으로 고정 초기화
+# 다만, 속도는 사용자가 변동하여 초기화
+
+
+# ===========================
+# 내 차의 이름: mycar
+# 내 차의 색: blue
+# 구동 방식이 선택 안되었어요
+# 내 차량의 최대 속도는 250.00km/s 까지 낼 수 있어요.
+# ===========================
+
+# a.changeName("a 자동차")
+# a.frontWheels() #구동방식은 2 -> getMycar에서 전륜 자동차 선택으로 출력
+# a.decreaseEngine(40) #40km/s 감소하여 210km/s로 변경
+
+global name
+global color 
+global wheels
+global speed
+
+def Car(a):
+    
+    speed = a
+
+    def getMycar():
+        print("내 차의 이름 : "+name)
+        print("내 차의 색 : "+color)
+        if(wheels == 0):
+            print("구동방식이 선택 안되었어요")
+        elif(wheels == 2):
+            print("전륜 구동 방식")
+        elif(wheels == 3):
+            print("후륜 구동 방식")
+        elif(wheels == 4):
+            print("전륜 구동 방식")
+        print("내 차량의 최대 속도는"+str(speed)+"까지 낼 수 있어요.")
+
+    def changeName(getname):
+        name = getname
+
+    def frontWheels(getwheels):
+        if(getwheels == 1):
+            print("1은 선택 할 수 없는 옵션입니다. 다시 골라주세요")
+            break
+        wheels = getwheels
+
+    def decreaseEngine(getdecreaseEngine):
+        speed = speed - getdecreaseEngine
+
+    def changeColor(getcolor):
+        color = getcolor
+
+    def increaseEngine(getincreaseEngine):
+        speed = speed + getincreaseEngine
